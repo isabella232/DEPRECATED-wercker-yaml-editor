@@ -24,6 +24,18 @@
       })
 
       $("#summary").html(result);
+      createPipeline(box,buildSteps);
+    }
+    function createPipeline (box, buildSteps) {
+      $("#box-name").html("");
+      $("#build-steps").html("");
+
+
+      _.each(buildSteps, function (buildStep) {
+        $("<span class=\"step\">").html(buildStep.name).appendTo("#build-steps");
+      })
+
+      $("#box-name").html(box.name);
     }
 
     function showError (message) {
@@ -31,7 +43,7 @@
     }
 
     function getBox (fullname, callback) {
-        var boxName = fullname;
+      var boxName = fullname;
       var boxVersion = "*"
       if(boxName.split("@").length > 1){
         boxName = fullname.split("@")[0]
@@ -60,7 +72,7 @@
           callback(e)
         }
       }
-      console.log(fullname)
+
         var stepName = fullname;
       var stepVersion = "*"
       if(stepName.split("@").length > 1){
@@ -143,7 +155,7 @@
               }
             }
             if(step === "script"){
-              buildSteps.push({name : "script", description : "Put your scripts here."})
+              buildSteps.push({name : "script", description : "Runs your script defined in code element."})
               return eachNext()
             }
 
@@ -175,6 +187,31 @@
 
     })
     </script>
+<style>
+  #pipeline {
+    background-color:#ebeef3;
+    border-color: black;
+    border-style: solid;
+    padding: 10px;
+  }
+  .box {
+    border-color: black;
+    border-style: solid;
+    background-color: #d9e8e9;
+    margin: 5px;
+    padding: 10px;
+  }
+
+  .step {
+    background-color:#00ad73;
+    border-color: black;
+    border-style: solid;
+    margin: 3px;
+  }
+  .box-label {
+    font-style: italic;
+  }
+</style>
 
   </head>
   <body>
@@ -190,5 +227,23 @@ build:
     <div id="errors"></div>
     <h2>summary</h2>
     <div id="summary"></div>
+    <h2>pipeline</h2>
+    <div id="pipeline">
+
+<span class="step">get code</span>
+<div class="box">
+  <div class="box-steps">
+    <span class="step">setup environment</span>
+    <span class="step">environment variables</span>
+
+  <span id="build-steps">
+
+  </span>
+  <span class="step">package</span>
+</div>
+  <span class="box-label" id="box-name">boxname</span>
+
+</div>
+    </div>
   </body>
 </html>
